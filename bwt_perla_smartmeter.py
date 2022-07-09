@@ -11,20 +11,20 @@ import pytesseract
 import re
 import paho.mqtt.client as mqtt
 
-bwt_ipaddress = "192.168.0.247"
+bwt_ipaddress = "192.168.0.mmm"
 bwt_password="passwd"
-mqtt_address="192.168.0.6"
-mqtt_topic_throughput="/raspberrypi1/smartmeter/bwt/durchfluss"
-mqtt_topic_volume="/raspberrypi1/smartmeter/bwt/volumen"
+mqtt_address="192.168.0.nnn"
+mqtt_topic_throughput="water/bwt/durchfluss"
+mqtt_topic_volume="water/bwt/volumen"
 
 #def bwt_connect():
 vncclient = api.connect(bwt_ipaddress, password=None)
 
 def bwt_login():
-    vncclient.mouseMove(400,200)
+    vncclient.mouseMove(160,105)
     vncclient.mouseDown(1)
     vncclient.mouseUp(1)
-    vncclient.mouseMove(400,100)
+    vncclient.mouseMove(50,50)
     vncclient.mouseDown(1)
     vncclient.mouseUp(1)
     vncclient.keyPress(bwt_password[0])
@@ -33,13 +33,12 @@ def bwt_login():
     vncclient.keyPress(bwt_password[3])
     vncclient.keyPress(bwt_password[4])
     vncclient.keyPress(bwt_password[5])
-    vncclient.mouseMove(715,420)
+    vncclient.mouseMove(295,215)
     vncclient.mouseDown(1)
     vncclient.mouseUp(1)
-    vncclient.mouseMove(630,430)
+    vncclient.mouseMove(295,215)
     vncclient.mouseDown(1)
     vncclient.mouseUp(1)
-    time.sleep(1)
 
 bwt_login()
 
@@ -51,8 +50,8 @@ throughput_old=-1
 volume_old=-1
 while True:
     # Capture regions
-    vncclient.captureRegion('throughput.png',110,140,280,50)
-    vncclient.captureRegion('volume.png',145,300,200,50)
+    vncclient.captureRegion('throughput.png',50,70,80,25)
+    vncclient.captureRegion('volume.png',60,150,80,25)
     throughputocroutput=pytesseract.image_to_string(Image.open('throughput.png'),lang = 'eng',config = '-c page_separator=""')
     volumeocroutput=pytesseract.image_to_string(Image.open('volume.png'),lang = 'eng',config = '-c page_separator=""')
     #print("=============================")
