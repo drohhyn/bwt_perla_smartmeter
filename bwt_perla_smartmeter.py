@@ -11,9 +11,11 @@ import pytesseract
 import re
 import paho.mqtt.client as mqtt
 
-bwt_ipaddress = "192.168.0.mmm"
+bwt_ipaddress="192.168.0.mmm"
 bwt_password="passwd"
 mqtt_address="192.168.0.nnn"
+mqtt_user="mqttuser"
+mqtt_pass="mqttpass"
 mqtt_topic="water/bwt/"
 
 #def bwt_connect():
@@ -66,6 +68,7 @@ def send_capture(var_name, var_name_old, regex_exp, x_pos, y_pos, x_size, y_size
 bwt_login()
 
 mqttclient=mqtt.Client()
+mqttclient.username_pw_set(mqtt_user, mqtt_pass)
 mqttclient.connect(mqtt_address, 1883, 20)
 mqttclient.loop_start()
 mqttclient.reconnect_delay_set(min_delay=1, max_delay=120)
