@@ -1,5 +1,5 @@
-
-# created by d3monxxl 
+# original by d3monxxl 
+# improved by drohhyn
 
 from vncdotool import api
 import time
@@ -77,7 +77,7 @@ volume_old=-1
 NaCl_old=-1
 while True:
     # Capture regions
-    send_capture("throughput", throughput_old, "\|*./h", 50, 70, 80, 25)
+    send_capture("throughput", throughput_old, "[Il1\|]*./[bh]", 50, 70, 90, 25)
     send_capture("volume", volume_old, "[Il1\|]", 60, 150, 80, 25)
     send_capture("NaCl", NaCl_old, "%", 198, 108, 45, 25)
     
