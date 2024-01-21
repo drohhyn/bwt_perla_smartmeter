@@ -2,10 +2,12 @@
 Read throughput and volume of BWT Perla water softening system (new VNC based firmware!)
 Original code by [d3m0nxxl](https://github.com/d3m0nxxl/bwt_perla_smartmeter), but somehow my BWT Perla has a fully different resolution so I changed most of the mouse and capture coordinates.
 
+
 ## improvements
 * Reusable method for capturing
 * Also including NaCl (Regeneriermittel)
 * mqtt with username/password
+* config on own perla.cfg file
 
 ## requirements
 
@@ -19,3 +21,4 @@ source bin/activate
 pip3 install pytesseract paho-mqtt vncdotool
 python3 bwt_perla_smartmeter.py
 ```
+create your own `pera.cfg` from the `pera.cfg-EXAMPLE` in the same folder.

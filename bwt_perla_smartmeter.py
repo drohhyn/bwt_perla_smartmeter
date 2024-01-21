@@ -10,13 +10,20 @@ except ImportError:
 import pytesseract
 import re
 import paho.mqtt.client as mqtt
+import configparser
 
-bwt_ipaddress="192.168.0.mmm"
-bwt_password="passwd"
-mqtt_address="192.168.0.nnn"
-mqtt_user="mqttuser"
-mqtt_pass="mqttpass"
-mqtt_topic="water/bwt/"
+configParser = configparser.RawConfigParser()   
+configFilePath = r'./perla.cfg'
+configParser.read(configFilePath)
+
+#print('from config: '+configParser.get('bwt','bwt_ipaddress'))
+
+bwt_ipaddress=configParser.get('bwt','bwt_ipaddress')
+bwt_password=configParser.get('bwt','bwt_password')
+mqtt_address=configParser.get('mqtt','mqtt_address')
+mqtt_user=configParser.get('mqtt','mqtt_user')
+mqtt_pass=configParser.get('mqtt','mqtt_pass')
+mqtt_topic=configParser.get('mqtt','mqtt_topic')
 
 #def bwt_connect():
 vncclient = api.connect(bwt_ipaddress, password=None)
