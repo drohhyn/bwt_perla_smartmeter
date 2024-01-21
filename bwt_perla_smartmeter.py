@@ -48,11 +48,12 @@ def bwt_login():
     vncclient.mouseDown(1)
     vncclient.mouseUp(1)
 
-def send_capture(var_name, var_name_old, regex_exp, x_pos, y_pos, x_size, y_size):
-    vncclient.captureRegion(var_name+'.png',x_pos,y_pos,x_size,y_size)
-    output_file=pytesseract.image_to_string(Image.open(var_name+'.png'),lang = 'eng',config = '-c page_separator=""')
+def send_capture(var_name, regex_exp, x_pos, y_pos, x_size, y_size):
+    vncclient.captureRegion(var_name+'.png', x_pos, y_pos, x_size, y_size)
+    output_file=pytesseract.image_to_string(Image.open(var_name+'.png'), lang = 'eng', config = '-c page_separator=""')
     #print(output_file)
     output_regex=re.search('(.*)'+regex_exp,output_file)
+    old_value = globals()[var_name+'_old']
     #print(var_name+" output_regex:",output_regex)
     if output_regex:
         output_regex=output_regex.group(1)
@@ -64,13 +65,17 @@ def send_capture(var_name, var_name_old, regex_exp, x_pos, y_pos, x_size, y_size
         print('OCR '+var_name+' failed')
         print('Trying to re-login')
         bwt_login()
-    if output_regex!=var_name_old:
-        #print("MQTT: Publish throughput: ",throughput)
+
+    #print("bwt value ", var_name)
+    #print("old output ",old_value)
+    #print("new output ",output_regex)
+    if output_regex!=old_value and output_regex is not None:
         try:
             mqttclient.publish(mqtt_topic + var_name, payload=output_regex, qos=1, retain=False)
+            print("+++ MQTT: Publish "+var_name+": ", output_regex)
         except:
-            print("MQTT: Publish throughput failed!")
-        var_name_old=output_regex
+            print("--- MQTT: Publish "+var_name+" failed!")
+    globals()[var_name+'_old']=output_regex
 
 bwt_login()
 
@@ -84,9 +89,10 @@ volume_old=-1
 NaCl_old=-1
 while True:
     # Capture regions
-    send_capture("throughput", throughput_old, "[Il1\|]*./[bh]", 50, 70, 90, 25)
-    send_capture("volume", volume_old, "[Il1\|]", 60, 150, 80, 25)
-    send_capture("NaCl", NaCl_old, "%", 198, 108, 45, 25)
+    send_capture("throughput", "[Il1\|]*./[bh]", 60, 70, 75, 25)
+    send_capture("volume", "[Il1\|]", 60, 148, 65, 25)
+    send_capture("NaCl", "%", 198, 108, 45, 25)
+    #print("### next sequence ###\n")
     
     # Keep VNC connection alive
     vncclient.mouseMove(400,0)

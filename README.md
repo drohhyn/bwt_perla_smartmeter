@@ -21,4 +21,4 @@ source bin/activate
 pip3 install pytesseract paho-mqtt vncdotool
 python3 bwt_perla_smartmeter.py
 ```
-create your own `pera.cfg` from the `pera.cfg-EXAMPLE` in the same folder.
+create your own `perla.cfg` from the `perla.cfg-EXAMPLE` in the same folder.
